@@ -1,5 +1,5 @@
 # encoding: utf-8
-class LogStash::Inputs::RabbitMQ
+class LogStash::Inputs::KonturElk
   # MarchHare-based implementation for JRuby
   module MarchHareImpl
     def register

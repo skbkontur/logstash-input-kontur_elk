@@ -13,9 +13,9 @@ require "json"
 # * RabbitMQ - <http://www.rabbitmq.com/>
 # * March Hare: <http://rubymarchhare.info>
 # * Bunny - <https://github.com/ruby-amqp/bunny>
-class LogStash::Inputs::RabbitMQ < LogStash::Inputs::Threadable
+class LogStash::Inputs::KonturElk < LogStash::Inputs::Threadable
 
-  config_name "rabbitmq"
+  config_name "kontur_elk"
 
   #
   # Connection
@@ -107,21 +107,6 @@ class LogStash::Inputs::RabbitMQ < LogStash::Inputs::Threadable
 
     super
   end
-
-  # Use March Hare on JRuby to avoid `IO#select` CPU spikes
-  # (see github.com/ruby-amqp/bunny/issues/95).
-  #
-  # On MRI, use Bunny.
-  #
-  # See http://rubybunny.info and http://rubymarchhare.info
-  # for the docs.
-  if RUBY_ENGINE == "jruby"
-    require "logstash/inputs/rabbitmq/march_hare"
-
+    require "logstash/inputs/kontur_elk/march_hare"
     include MarchHareImpl
-  else
-    require "logstash/inputs/rabbitmq/bunny"
-
-    include BunnyImpl
-  end
 end # class LogStash::Inputs::RabbitMQ
