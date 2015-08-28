@@ -1,5 +1,5 @@
 Gem::Specification.new do |s|
-  s.name            = 'logstash-input-rabbitmq'
+  s.name            = 'logstash-input-kontur_elk'
   s.version         = '1.1.1'
   s.licenses        = ['Apache License (2.0)']
   s.summary         = "Pull events from a RabbitMQ exchange."
