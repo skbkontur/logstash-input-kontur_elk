@@ -110,11 +110,23 @@ class LogStash::Inputs::RabbitMQ
       # we manually build a consumer here to be able to keep a reference to it
       # in an @ivar even though we use a blocking version of HB::Queue#subscribe
       @consumer = @q.build_consumer(:block => true) do |metadata, data|
-        @codec.decode(data) do |event|
-          decorate(event)
-          @output_queue << event if event
+        ix_line = true
+        ix = Hash.new
+        data.each_line do | line |
+          h = JSON.parse(line)
+          if ix_line
+            ix = h
+          else
+            h["_index"] = ix["index"]["_index"]
+            h["_type"] = ix["index"]["_type"]
+            @codec.decode(h.to_json) do |event|
+              decorate(event)
+              @output_queue << event if event
+            end
+            @ch.ack(metadata.delivery_tag) if @ack
+          end
+          ix_line = !ix_line
         end
-        @ch.ack(metadata.delivery_tag) if @ack
       end
       @q.subscribe_with(@consumer, :manual_ack => @ack, :block => true)
     end

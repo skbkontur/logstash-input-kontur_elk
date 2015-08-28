@@ -1,7 +1,7 @@
 # encoding: utf-8
 require "logstash/inputs/threadable"
 require "logstash/namespace"
-
+require "json"
 # Pull events from a RabbitMQ exchange.
 #
 # The default settings will create an entirely transient queue and listen for all messages by default.
