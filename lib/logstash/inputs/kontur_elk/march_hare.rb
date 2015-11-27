@@ -119,6 +119,7 @@ class LogStash::Inputs::KonturElk
           else
             h["_index"] = ix["index"]["_index"]
             h["_type"] = ix["index"]["_type"]
+            h.delete("type")
             @codec.decode(h.to_json) do |event|
               decorate(event)
               @output_queue << event if event
